@@ -3,48 +3,54 @@
 {% block title_block %}Inbox{% endblock %}
 
 {% block content_block %}
-<div class="row mb-4">
-    <div class="col">
-        <h2>Received Requests</h2>
-    </div>
-    <div class="col text-end">
-        <a href="{% url 'swaps:sent' %}" class="btn btn-outline-primary">
-            View Sent Requests
-        </a>
-    </div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Received Requests</h2>
+    <a href="{% url 'swaps:sent' %}" class="btn btn-outline-primary">
+        View Sent
+    </a>
 </div>
 
 {% if received %}
+<div class="row g-3">
+
     {% for swap in received %}
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
+    <div class="col-12">
+
+        <div class="card request-card">
+
+            <div class="card-body d-flex justify-content-between">
+
                 <div>
-                    <h5>
+                    <h5 class="mb-2">
                         <a href="{% url 'accounts:public_profile' swap.sender.username %}">
                             {{ swap.sender.username }}
                         </a>
-                         wants to swap!
+                        <span class="text-muted">wants to swap</span>
                     </h5>
+
                     <p class="mb-1">
-                        <!-- What they're offering -->
                         <span class="badge bg-success">Offering</span>
                         {{ swap.offered_skill.skill.name }}
-                        ({{ swap.offered_skill.get_proficiency_level_display }})
+                        <small class="text-muted">
+                            ({{ swap.offered_skill.get_proficiency_level_display }})
+                        </small>
                     </p>
+
                     <p class="mb-1">
-                        <!-- What they want from you -->
                         <span class="badge bg-warning text-dark">Wants</span>
                         {{ swap.requested_skill.skill.name }}
                     </p>
+
                     {% if swap.message %}
                         <p class="text-muted small mt-2">
                             "{{ swap.message }}"
                         </p>
                     {% endif %}
                 </div>
+
                 <div class="text-end">
-                    <!-- Status badge -->
+
                     <span class="badge 
                         {% if swap.status == 'pending' %}
                             bg-warning text-dark
@@ -57,27 +63,49 @@
                         {% endif %}">
                         {{ swap.get_status_display }}
                     </span>
-                    <div class="mt-2">
+
+                    <div class="mt-2 d-flex gap-1 justify-content-end flex-wrap">
+
                         <a href="{% url 'swaps:detail' swap.pk %}" 
-                           class="btn btn-sm btn-outline-primary">View</a>
+                           class="btn btn-sm btn-outline-primary">
+                           View
+                        </a>
+
                         {% if swap.status == 'pending' %}
                             <a href="{% url 'swaps:accept' swap.pk %}" 
-                               class="btn btn-sm btn-success">Accept</a>
+                               class="btn btn-sm btn-success">
+                               Accept
+                            </a>
+
                             <a href="{% url 'swaps:deny' swap.pk %}" 
-                               class="btn btn-sm btn-danger">Deny</a>
+                               class="btn btn-sm btn-danger">
+                               Deny
+                            </a>
                         {% endif %}
+
                     </div>
                 </div>
+
             </div>
+
+            <div class="card-footer text-muted small">
+                Received {{ swap.created_at|date:"M d, Y" }}
+            </div>
+
         </div>
-        <div class="card-footer text-muted small">
-            Received {{ swap.created_at|date:"M d, Y" }}
-        </div>
+
     </div>
     {% endfor %}
+
+</div>
+
 {% else %}
-    <p class="text-muted">No swap requests yet. 
-        <a href="{% url 'skills:list' %}">Browse skills</a> to get started!
-    </p>
+    <div class="text-center mt-5">
+        <p class="text-muted">No swap requests yet.</p>
+        <a href="{% url 'skills:list' %}" class="btn btn-primary">
+            Browse Skills
+        </a>
+    </div>
 {% endif %}
+
 {% endblock %}
