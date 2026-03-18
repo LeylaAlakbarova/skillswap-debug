@@ -9,4 +9,4 @@ This is a community skills swapping web platform created using Django, HTML, CSS
 - SQLite for local dev 
 
 ## github setup
-git clone https://github.com/WereAM/skillswap.git
+git clone https://github.com/LeylaAlakbarova/skillswap-debug.git
