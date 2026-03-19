@@ -39,6 +39,13 @@ if RAILWAY_HOST:
 # Allow all Railway domains as fallback
 ALLOWED_HOSTS.append('.railway.app')
 
+# Trusted origins for CSRF - add Railway domain
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
